@@ -1,4 +1,4 @@
-package edu.colorado.csdms.heat;
+package edu.colorado.csdms.bmiheat;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
