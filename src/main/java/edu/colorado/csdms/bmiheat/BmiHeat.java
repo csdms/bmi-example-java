@@ -1,7 +1,7 @@
 /**
  * Basic Model Interface implementation for the 2D heat model.
  */
-package edu.colorado.csdms.heat;
+package edu.colorado.csdms.bmiheat;
 
 import java.io.File;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.colorado.csdms.bmi.BMI;
+import edu.colorado.csdms.heat.Heat;
 
 /**
  * BMI methods that wrap the {@link edu.colorado.csdms.heat.Heat} class.
