@@ -5,6 +5,7 @@ package edu.colorado.csdms.bmiheat;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -371,5 +372,76 @@ public class BmiHeat implements BMI {
 
   public static void main(String[] args) {
     System.out.println("*\n* Example: Heat Model run through its BMI\n*");
+
+    // Instantiate and initialize model.
+    BmiHeat bmi = new BmiHeat();
+    bmi.initialize("src/test/resources/data/heat.xml");
+
+    String componentName = bmi.getComponentName();
+    System.out.println("Model name: " + componentName);
+
+    System.out.println("Start time: " + bmi.getStartTime());
+    System.out.println("End time: " + bmi.getEndTime());
+    System.out.println("Current time: " + bmi.getCurrentTime());
+    System.out.println("Time step: " + bmi.getTimeStep());
+    System.out.println("Time unit: " + bmi.getTimeUnits());
+
+    System.out.println("Input variables: ");
+    for (int i = 0; i < bmi.getInputVarNameCount(); i++) {
+      System.out.println("- " + bmi.getInputVarNames()[i]);
+    }
+    System.out.println("Output variables: ");
+    for (int i = 0; i < bmi.getOutputVarNameCount(); i++) {
+      System.out.println("- " + bmi.getOutputVarNames()[i]);
+    }
+
+    // Get the grid and variable info for the temperature variable.
+    String var_name = bmi.getOutputVarNames()[0];
+    System.out.println("Variable: " + var_name);
+    Integer grid_id = bmi.getVarGrid(var_name);
+    System.out.println("- grid_id: " + grid_id);
+    System.out.println("- grid type: " + bmi.getGridType(grid_id));
+    System.out.println("- grid rank: " + bmi.getGridRank(grid_id));
+    System.out.println("- grid size: " + bmi.getGridSize(grid_id));
+    System.out.println("- grid shape:");
+    int[] shape = bmi.getGridShape(grid_id);
+    for (int i = 0; i < bmi.getGridRank(grid_id); i++) {
+      System.out.println("  - " + shape[i]);
+    }
+    System.out.println("- grid spacing:");
+    for (int i = 0; i < bmi.getGridRank(grid_id); i++) {
+      System.out.println("  - " + bmi.getGridSpacing(grid_id)[i]);
+    }
+    System.out.println("- grid origin:");
+    for (int i = 0; i < bmi.getGridRank(grid_id); i++) {
+      System.out.println("  - " + bmi.getGridOrigin(grid_id)[i]);
+    }
+    System.out.println("- var type: " + bmi.getVarType(var_name));
+    System.out.println("- var units: " + bmi.getVarUnits(var_name));
+    System.out.println("- var itemsize: " + bmi.getVarItemsize(var_name));
+    System.out.println("- var nbytes: " + bmi.getVarNbytes(var_name));
+
+    // Get default initial temperature field and add an impulse.
+    double[] temp0 = bmi.getValue(var_name);
+    temp0[3*shape[1] + 2] = 100.0;
+    bmi.setValue(var_name, temp0);
+
+    // Advance model over several time steps.
+    Double currentTime = bmi.getCurrentTime();
+    while (currentTime < 1.0) {
+      System.out.println("time = " + currentTime.toString());
+      System.out.println("temperature =");
+      double[] temp = bmi.getValue(var_name);
+      for (int j = 0; j < shape[0]; j++) {
+        for (int i = 0; i < shape[1]; i++) {
+          System.out.format("%7.2f", temp[j*shape[1] + i]);
+        }
+        System.out.print("\n");
+      }
+      bmi.update();
+      currentTime = bmi.getCurrentTime();
+    }
+
+    bmi.finalize();
   }
 }
