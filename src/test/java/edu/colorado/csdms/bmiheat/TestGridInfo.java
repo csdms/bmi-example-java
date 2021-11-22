@@ -27,10 +27,10 @@ public class TestGridInfo {
   public void setUp() throws Exception {
     varName = "plate_surface__temperature";
     gridId = 0;
-    shape = new int[] {10, 20};
+    shape = new int[] {8, 6};
     spacing = new double[] {1.0, 1.0};
     origin = new double[] {0.0, 0.0};
-    size = 200;
+    size = 48;
     type = "uniform_rectilinear_grid";
     delta = 0.1;
   }

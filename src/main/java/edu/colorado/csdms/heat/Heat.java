@@ -47,18 +47,15 @@ public class Heat {
     Double minSpacing = Math.min(spacing.get(0), spacing.get(1));
     timeStep = Math.pow(minSpacing, 2.0) / (4.0 * this.alpha);
 
-    // Initialize temperature of plate. The top row is hot.
+    // Initialize plate temperature.
     temperature = new double[shape.get(1)][shape.get(0)];
-    for (int i = 0; i < shape.get(1); i++) {
-      temperature[i][0] = 20.0;
-    }
   }
 
   /**
    * Create a Heat model using default parameter values.
    */
   public Heat() {
-    this(10, 20, 1.0, 1.0, 0.0, 0.0, 1.0);
+    this(8, 6, 1.0, 1.0, 0.0, 0.0, 1.0);
   }
 
   /**
@@ -238,38 +235,34 @@ public class Heat {
   }
 
   /**
-   * <p>main.</p>
+   * Main program.
    *
    * @param args an array of {@link java.lang.String} objects.
    */
   public static void main(String[] args) {
-    System.out.println("Example of using Heat class");
+    System.out.println("Heat Example");
     Heat heat = new Heat("src/test/resources/data/heat.xml");
     System.out.println("shape: " + heat.getShape().toString());
     System.out.println("spacing: " + heat.getSpacing().toString());
     System.out.println("origin: " + heat.getOrigin().toString());
 
-    double[][] temp = heat.getTemperature();
+    // Place impulse in termperature field.
+    double[][] temp0 = heat.getTemperature();
+    temp0[2][3] = 100.0;
+    heat.setTemperature(temp0);
 
-    // Print first column.
-    double[] col0 = temp[0];
-    System.out.println("Col0 = ");
-    System.out.println(Arrays.toString(col0));
-
-    // Print first row.
-    double[] row0 = new double[heat.getShape().get(1)];
-    for (int i = 0; i < row0.length; i++) {
-      row0[i] = temp[i][0];
-    }
-    System.out.println("Row0 = ");
-    System.out.println(Arrays.toString(row0));
-
-    // Advance over several time steps.
+    // Advance model over several time steps.
     Double currentTime = heat.getTime();
     while (currentTime < 1.0) {
       System.out.println("time = " + currentTime.toString());
-      System.out.println("temperature: "
-          + Arrays.deepToString(heat.getTemperature()));
+      System.out.println("temperature =");
+      double[][] temp = heat.getTemperature();
+      for (int j = 0; j < heat.getShape().get(0); j++) {
+        for (int i = 0; i < heat.getShape().get(1); i++) {
+          System.out.format("%7.2f", temp[i][j]);
+        }
+        System.out.print("\n");
+      }
       heat.advanceInTime();
       currentTime = heat.getTime();
     }

@@ -28,8 +28,8 @@ public class HeatTest {
    */
   @Before
   public void setUp() throws Exception {
-    Integer nRows = 10;
-    Integer nCols = 20;
+    Integer nRows = 8;
+    Integer nCols = 6;
     Double dx = 1.0;
     Double dy = 1.0;
     Double xStart = 0.0;
@@ -43,11 +43,8 @@ public class HeatTest {
     spacing = new ArrayList<Double>(Arrays.asList(dx, dy));
     origin = new ArrayList<Double>(Arrays.asList(xStart, yStart));
 
-    // Initialize temperature of plate. The top row is hot.
+    // Initialize plate temperature.
     temperature = new double[shape.get(1)][shape.get(0)];
-    for (int i = 0; i < shape.get(1); i++) {
-      temperature[i][0] = 20.0;
-    }
   }
 
   /**
@@ -62,8 +59,8 @@ public class HeatTest {
    */
   @Test
   public final void testHeatIntegerIntegerDoubleDoubleDoubleDoubleDouble() {
-    Integer nRows = 10;
-    Integer nCols = 20;
+    Integer nRows = 8;
+    Integer nCols = 6;
     Double dx = 1.0;
     Double dy = 1.0;
     Double xStart = 0.0;
