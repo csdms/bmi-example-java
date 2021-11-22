@@ -95,7 +95,7 @@
                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                 <addClasspath>true</addClasspath>
                 <!-- <classpathPrefix>lib/</classpathPrefix> -->
-                <mainClass>edu.colorado.csdms.heat.Heat</mainClass>
+                <mainClass>edu.colorado.csdms.example.Examples</mainClass>
               </manifest>
             </archive>
           </configuration>
@@ -105,7 +105,7 @@
           <artifactId>exec-maven-plugin</artifactId>
           <version>3.0.0</version>
           <configuration>
-            <mainClass>edu.colorado.csdms.heat.Heat</mainClass>
+            <mainClass>edu.colorado.csdms.example.Examples</mainClass>
           </configuration>
         </plugin>
         <plugin>

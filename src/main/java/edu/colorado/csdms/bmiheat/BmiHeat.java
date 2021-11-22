@@ -368,4 +368,8 @@ public class BmiHeat implements BMI {
   public void setValueAtIndices(String varName, int[] indices, String[] src) {
     return; // Not implemented for Heat
   }
+
+  public static void main(String[] args) {
+    System.out.println("*\n* Example: Heat Model run through its BMI\n*");
+  }
 }

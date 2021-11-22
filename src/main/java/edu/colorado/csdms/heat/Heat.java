@@ -240,7 +240,7 @@ public class Heat {
    * @param args an array of {@link java.lang.String} objects.
    */
   public static void main(String[] args) {
-    System.out.println("Heat Example");
+    System.out.println("*\n* Example: Heat Model\n*");
     Heat heat = new Heat("src/test/resources/data/heat.xml");
     System.out.println("shape: " + heat.getShape().toString());
     System.out.println("spacing: " + heat.getSpacing().toString());
