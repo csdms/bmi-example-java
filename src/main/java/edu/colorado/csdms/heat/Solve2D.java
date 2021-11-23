@@ -23,12 +23,12 @@ public class Solve2D {
   public static double[][] solve(double[][] temperature, List<Integer> shape,
       List<Double> spacing, Double alpha, Double timeStep) {
 
-    Integer topRowIndex = shape.get(1) - 1;
-    Integer topColIndex = shape.get(0) - 1;
-    Double dx2 = Math.pow(spacing.get(0), 2.0);
-    Double dy2 = Math.pow(spacing.get(1), 2.0);
+    Integer topRowIndex = shape.get(0) - 1;
+    Integer topColIndex = shape.get(1) - 1;
+    Double dx2 = Math.pow(spacing.get(1), 2.0);
+    Double dy2 = Math.pow(spacing.get(0), 2.0);
     Double c = alpha * timeStep / (dx2 + dy2);
-    double[][] newTemperature = new double[shape.get(1)][shape.get(0)];
+    double[][] newTemperature = new double[shape.get(0)][shape.get(1)];
     
     for (int i = 1; i < topRowIndex; i++) {
       for (int j = 1; j < topColIndex; j++) {
@@ -39,12 +39,12 @@ public class Solve2D {
       }
     }
 
-    for (int j = 0; j < shape.get(0); j++) {
+    for (int j = 0; j < shape.get(1); j++) {
       newTemperature[0][j] = 0.0;
       newTemperature[topRowIndex][j] = 0.0;
     }
 
-    for (int i = 0; i < shape.get(1); i++) {
+    for (int i = 0; i < shape.get(0); i++) {
       newTemperature[i][0] = 0.0;
       newTemperature[i][topColIndex] = 0.0;
     }
