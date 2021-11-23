@@ -40,11 +40,11 @@ public class HeatTest {
 
     time = 0.0;
     shape = new ArrayList<Integer>(Arrays.asList(nRows, nCols));
-    spacing = new ArrayList<Double>(Arrays.asList(dx, dy));
-    origin = new ArrayList<Double>(Arrays.asList(xStart, yStart));
+    spacing = new ArrayList<Double>(Arrays.asList(dy, dx));
+    origin = new ArrayList<Double>(Arrays.asList(yStart, xStart));
 
     // Initialize plate temperature.
-    temperature = new double[shape.get(1)][shape.get(0)];
+    temperature = new double[nRows][nCols];
   }
 
   /**
@@ -220,12 +220,9 @@ public class HeatTest {
    */
   @Test
   public final void testSetTemperature() {
-    double[][] newTemperature = new double[shape.get(1)][shape.get(0)];
+    double[][] newTemperature = new double[shape.get(0)][shape.get(1)];
     for (int i = 0; i < shape.get(1); i++) {
-      double[] iCol = newTemperature[i];
-      for (int j = 0; j < iCol.length; j++) {
-        iCol[j] = j + 1;
-      }
+      newTemperature[0][i] = i + 10.0;
     }
     heat.setTemperature(newTemperature);
 
