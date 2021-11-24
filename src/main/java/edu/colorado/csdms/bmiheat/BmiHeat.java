@@ -29,7 +29,6 @@ public class BmiHeat implements BMI {
     {"plate_surface__temperature"};
   
   private Heat model;
-  private HashMap<String, double[]> values;
   private HashMap<String, String> varUnits;
   private HashMap<Integer, String> grids;
   private HashMap<Integer, String> gridType;
@@ -39,7 +38,6 @@ public class BmiHeat implements BMI {
    */
   public BmiHeat() {
     model = null;
-    values = new HashMap<String, double[]>();
     varUnits = new HashMap<String, String>();
     grids = new HashMap<Integer, String>();
     gridType = new HashMap<Integer, String>();
@@ -67,7 +65,6 @@ public class BmiHeat implements BMI {
    * instance.
    */
   private void initializeHelper() {
-    values.put(INPUT_VAR_NAMES[0], flattenArray2D(model.getTemperature()));
     varUnits.put(INPUT_VAR_NAMES[0], "K");
     grids.put(0, INPUT_VAR_NAMES[0]);
     gridType.put(0, "uniform_rectilinear_grid");
@@ -238,15 +235,14 @@ public class BmiHeat implements BMI {
   /** {@inheritDoc} */
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getValue(String varName) {
-    return (T) values.get(varName).clone();
+  public double[] getValue(String varName) {
+	return flattenArray2D(model.getTemperature());
   }
 
   /** {@inheritDoc} */
-  @SuppressWarnings("unchecked")
   @Override
   public <T> T getValueRef(String varName) {
-    return (T) values.get(varName);
+    return null; // Not implemented
   }
 
   /** {@inheritDoc} */
@@ -345,10 +341,9 @@ public class BmiHeat implements BMI {
   /** {@inheritDoc} */
   @Override
   public void setValue(String varName, double[] src) {
-    double[] varRef = getValueRef(varName);
-    for (int i = 0; i < varRef.length; i++) {
-      varRef[i] = src[i];
-    }
+    int nRows = getGridShape(getVarGrid(varName))[0];
+    int nCols = getGridShape(getVarGrid(varName))[1];
+    model.setTemperature(unflattenArray2D(src, nRows, nCols));
   }
 
   /** {@inheritDoc} */
