@@ -196,7 +196,12 @@ public class BmiHeat implements BMI {
   /** {@inheritDoc} */
   @Override
   public String getVarType(String varName) {
-    return values.get(varName).getClass().getName();
+    if (varName == getOutputVarNames()[0]) {
+      if (model.getTemperature().getClass().getName().contains("D")) {
+        return "double";
+      }
+    }
+    return null;
   }
 
   /** {@inheritDoc} */
@@ -209,7 +214,7 @@ public class BmiHeat implements BMI {
   @Override
   public int getVarItemsize(String varName) {
     int itemSize = 0;
-    if (getVarType(varName).equals("[D")) {
+    if (getVarType(varName).equalsIgnoreCase("double")) {
       itemSize = 8;
     }
     return itemSize;
@@ -218,7 +223,11 @@ public class BmiHeat implements BMI {
   /** {@inheritDoc} */
   @Override
   public int getVarNbytes(String varName) {
-    return getVarItemsize(varName) * values.get(varName).length;
+    if (varName == getOutputVarNames()[0]) {
+      return getVarItemsize(varName) * getGridSize(getVarGrid(varName));
+    } else {
+      return -1;
+    }
   }
 
   /** {@inheritDoc} */
