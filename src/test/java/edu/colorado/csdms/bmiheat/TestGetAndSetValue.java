@@ -136,17 +136,15 @@ public class TestGetAndSetValue {
     BmiHeat component = new BmiHeat();
     component.initialize();
 
-    double[] varRef = component.getValueRef(varName);
-    double[] varNew1 = new double[varRef.length];
+    double[] varNew1 = component.getValue(varName);
     varNew1[0] = 5.0;
 
     component.setValue(varName, varNew1);
 
-    double[] varNew2 = component.getValueRef(varName);
+    double[] varNew2 = component.getValue(varName);
 
-    assertEquals(varRef, varNew2);
     assertNotSame(varNew1, varNew2);
-    assertArrayEquals(varNew2, varNew1, delta);
+    assertArrayEquals(varNew1, varNew2, delta);
   }
 
   /**
