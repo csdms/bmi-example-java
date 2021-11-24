@@ -5,7 +5,6 @@ package edu.colorado.csdms.bmiheat;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -421,12 +420,12 @@ public class BmiHeat implements BMI {
     System.out.println("- var itemsize: " + bmi.getVarItemsize(var_name));
     System.out.println("- var nbytes: " + bmi.getVarNbytes(var_name));
 
-    // Get default initial temperature field and add an impulse.
+    // Add an impulse to the default initial temperature field.
     double[] temp0 = bmi.getValue(var_name);
     temp0[3*shape[1] + 2] = 100.0;
     bmi.setValue(var_name, temp0);
 
-    // Advance model over several time steps.
+    // Advance the model over several time steps.
     Double currentTime = bmi.getCurrentTime();
     while (currentTime < 1.0) {
       System.out.println("time = " + currentTime.toString());
