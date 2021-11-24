@@ -23,6 +23,7 @@ public class TestGetAndSetValue {
   private Double delta; // maximum difference to be considered equal
   private String varName;
   private String varUnits;
+  private String varType;
   private Double initialTempMin;
   private Double initialTempMax;
   private double[] array1D = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
@@ -36,6 +37,7 @@ public class TestGetAndSetValue {
     delta = 0.1;
     varName = "plate_surface__temperature";
     varUnits = "K";
+    varType = "double";
     initialTempMin = 0.0;
     initialTempMax = 20.0;
   }
@@ -54,7 +56,7 @@ public class TestGetAndSetValue {
   public final void testGetVarType() {
     BmiHeat component = new BmiHeat();
     component.initialize();
-    assertEquals("[D", component.getVarType(varName));
+    assertEquals(varType, component.getVarType(varName));
   }
 
   /**
