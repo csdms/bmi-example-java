@@ -79,18 +79,30 @@ public class BmiHeat implements BMI {
    * @param array2D a 2D array of doubles
    * @return a 1D array of doubles
    */
-  private double[] flattenArray2D(double[][] array2D) {
-    int size1D = 0;
-    for (double[] array : array2D) {
-      size1D += array.length;
-    }
-    double[] array1D = new double[size1D];
-    int pos = 0;
-    for (double[] array : array2D) {
-      System.arraycopy(array, 0, array1D, pos, array.length);
-      pos += array.length;
-    }
+  protected double[] flattenArray2D(double[][] array2D) {
+	int nRows = array2D.length, nCols = array2D[0].length;
+	double[] array1D = new double[(nRows*nCols)];
+      for ( int i = 0; i < nRows; i++ ) {
+	    System.arraycopy(array2D[i], 0, array1D, (i*nCols), nCols);
+      }
     return array1D;
+  }
+
+  /**
+   * A helper that converts a 1D array of doubles into a 2D array using the
+   * shape of the model grid.
+   *
+   * @param array1D a 1D array of doubles
+   * @param nRows the desired number of rows of the 2D array
+   * @param nCols the desired number of columns of the 2D array
+   * @return a 2D array of doubles
+   */
+  protected double[][] unflattenArray2D(double[] array1D, int nRows, int nCols) {
+    double[][] array2D = new double[nRows][nCols];
+    for (int i = 0; i < nRows; i++) {
+        System.arraycopy(array1D, (i*nCols), array2D[i], 0, nCols);
+    }
+    return array2D;
   }
 
   /** {@inheritDoc} */
