@@ -100,26 +100,6 @@ public class TestGetAndSetValue {
   }
 
   /**
-   * Test method for {@link BmiHeat#getValueRef(java.lang.String)}.
-   */
-  @Test
-  public final void testGetValueRef() {
-    BmiHeat component = new BmiHeat();
-    component.initialize();
-
-    double[] varRef = component.getValueRef(varName);
-    double[] varCpy = component.getValue(varName);
-
-    assertNotSame(varCpy, varRef);
-    assertArrayEquals(varRef, varCpy, delta);
-
-    for (int i = 0; i < 5; i++) {
-      component.update();
-    }
-    assertArrayEquals(varRef, (double[]) component.getValueRef(varName), delta);
-  }
-
-  /**
    * Test method for {@link BmiHeat#getValueAtIndices(java.lang.String, int[])}.
    */
   @Test
