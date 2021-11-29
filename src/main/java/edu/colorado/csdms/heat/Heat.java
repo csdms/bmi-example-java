@@ -39,16 +39,16 @@ public class Heat {
       Double xStart, Double yStart, Double alpha) {
 
     shape = new ArrayList<Integer>(Arrays.asList(nRows, nCols));
-    spacing = new ArrayList<Double>(Arrays.asList(dx, dy));
-    origin = new ArrayList<Double>(Arrays.asList(xStart, yStart));
+    spacing = new ArrayList<Double>(Arrays.asList(dy, dx));
+    origin = new ArrayList<Double>(Arrays.asList(yStart, xStart));
     this.alpha = alpha;
     time = 0.0;
 
-    Double minSpacing = Math.min(spacing.get(0), spacing.get(1));
+    Double minSpacing = Math.min(dy, dx);
     timeStep = Math.pow(minSpacing, 2.0) / (4.0 * this.alpha);
 
     // Initialize plate temperature.
-    temperature = new double[shape.get(1)][shape.get(0)];
+    temperature = new double[nRows][nCols];
   }
 
   /**
@@ -248,7 +248,7 @@ public class Heat {
 
     // Place impulse in termperature field.
     double[][] temp0 = heat.getTemperature();
-    temp0[2][3] = 100.0;
+    temp0[3][2] = 100.0;
     heat.setTemperature(temp0);
 
     // Advance model over several time steps.
@@ -259,7 +259,7 @@ public class Heat {
       double[][] temp = heat.getTemperature();
       for (int j = 0; j < heat.getShape().get(0); j++) {
         for (int i = 0; i < heat.getShape().get(1); i++) {
-          System.out.format("%7.2f", temp[i][j]);
+          System.out.format("%7.2f", temp[j][i]);
         }
         System.out.print("\n");
       }

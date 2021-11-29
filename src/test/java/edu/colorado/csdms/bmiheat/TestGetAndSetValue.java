@@ -17,12 +17,17 @@ import org.junit.Test;
 public class TestGetAndSetValue {
 
   private static final int SIZEOF_DOUBLE = 8;
+  private static final int NROWS = 4;
+  private static final int NCOLS = 3;
 
   private Double delta; // maximum difference to be considered equal
   private String varName;
   private String varUnits;
+  private String varType;
   private Double initialTempMin;
   private Double initialTempMax;
+  private double[] array1D = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+  private double[][] array2D = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}};
 
   /**
    * @throws java.lang.Exception
@@ -32,6 +37,7 @@ public class TestGetAndSetValue {
     delta = 0.1;
     varName = "plate_surface__temperature";
     varUnits = "K";
+    varType = "double";
     initialTempMin = 0.0;
     initialTempMax = 20.0;
   }
@@ -50,7 +56,7 @@ public class TestGetAndSetValue {
   public final void testGetVarType() {
     BmiHeat component = new BmiHeat();
     component.initialize();
-    assertEquals("[D", component.getVarType(varName));
+    assertEquals(varType, component.getVarType(varName));
   }
 
   /**
@@ -100,26 +106,6 @@ public class TestGetAndSetValue {
   }
 
   /**
-   * Test method for {@link BmiHeat#getValueRef(java.lang.String)}.
-   */
-  @Test
-  public final void testGetValueRef() {
-    BmiHeat component = new BmiHeat();
-    component.initialize();
-
-    double[] varRef = component.getValueRef(varName);
-    double[] varCpy = component.getValue(varName);
-
-    assertNotSame(varCpy, varRef);
-    assertArrayEquals(varRef, varCpy, delta);
-
-    for (int i = 0; i < 5; i++) {
-      component.update();
-    }
-    assertArrayEquals(varRef, (double[]) component.getValueRef(varName), delta);
-  }
-
-  /**
    * Test method for {@link BmiHeat#getValueAtIndices(java.lang.String, int[])}.
    */
   @Test
@@ -150,17 +136,15 @@ public class TestGetAndSetValue {
     BmiHeat component = new BmiHeat();
     component.initialize();
 
-    double[] varRef = component.getValueRef(varName);
-    double[] varNew1 = new double[varRef.length];
+    double[] varNew1 = component.getValue(varName);
     varNew1[0] = 5.0;
 
     component.setValue(varName, varNew1);
 
-    double[] varNew2 = component.getValueRef(varName);
+    double[] varNew2 = component.getValue(varName);
 
-    assertEquals(varRef, varNew2);
     assertNotSame(varNew1, varNew2);
-    assertArrayEquals(varNew2, varNew1, delta);
+    assertArrayEquals(varNew1, varNew2, delta);
   }
 
   /**
@@ -171,4 +155,29 @@ public class TestGetAndSetValue {
     return; // Not implemented
   }
 
+  /**
+   * Test that a flattened 2D array can be redimensionalized with
+   * {@link BmiHeat#unflattenArray2D(double[], int, int)}.
+   */
+  @Test
+  public final void testUnflatten2dArray() {
+    BmiHeat component = new BmiHeat();
+
+    double[][] new2D = new double[NROWS][NCOLS];
+    new2D = component.unflattenArray2D(array1D, NROWS, NCOLS);
+    assertArrayEquals(array2D[0], new2D[0], delta);
+  }
+
+  /**
+   * Test that a 2D array can be flattened with
+   * {@link BmiHeat#flattenArray2D(double[][])}.
+   */
+  @Test
+  public final void testFlatten2dArray() {
+    BmiHeat component = new BmiHeat();
+
+    double[] new1D = new double[NROWS*NCOLS];
+    new1D = component.flattenArray2D(array2D);
+    assertArrayEquals(array1D, new1D, delta);
+  }
 }
