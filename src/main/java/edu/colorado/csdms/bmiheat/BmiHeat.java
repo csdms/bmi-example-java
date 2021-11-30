@@ -59,7 +59,7 @@ public class BmiHeat implements BMI {
   private void initializeHelper() {
     varUnits.put(INPUT_VAR_NAMES[0], "K");
     grids.put(0, INPUT_VAR_NAMES[0]);
-    gridType.put(0, "uniform_rectilinear_grid");
+    gridType.put(0, "uniform_rectilinear");
   }
 
   @Override
