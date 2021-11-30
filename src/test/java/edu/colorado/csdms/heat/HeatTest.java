@@ -209,7 +209,7 @@ public class HeatTest {
   @Test
   public final void testGetTemperature() {
 
-    // Check that the first column matches.
+    // Check that the first row matches.
     double expected[] = temperature[0];
     double actual[] = heat.getTemperature()[0];
     assertArrayEquals(expected, actual, 0);
@@ -226,7 +226,7 @@ public class HeatTest {
     }
     heat.setTemperature(newTemperature);
 
-    // Check that the first column matches.
+    // Check that the first row matches.
     double expected[] = newTemperature[0];
     double actual[] = heat.getTemperature()[0];
     assertArrayEquals(expected, actual, 0);
