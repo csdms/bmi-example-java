@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  * JUnit tests for the grid information methods of the {@link BmiHeat} class.
  */
-public class TestGridInfo {
+public class TestGridMethods {
   
   private String varName;
   private int gridId;
@@ -20,9 +20,6 @@ public class TestGridInfo {
   private String type;
   private Double delta; // maximum difference to be considered equal
 
-  /**
-   * @throws java.lang.Exception
-   */
   @Before
   public void setUp() throws Exception {
     varName = "plate_surface__temperature";
@@ -35,9 +32,6 @@ public class TestGridInfo {
     delta = 0.1;
   }
 
-  /**
-   * @throws java.lang.Exception
-   */
   @After
   public void tearDown() throws Exception {
   }
