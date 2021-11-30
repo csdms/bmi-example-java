@@ -8,11 +8,13 @@ import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * JUnit tests for the getter and setter methods of the {@link BmiHeat} class.
  */
+@Ignore
 public class TestGetAndSetValue {
 
   private Double delta; // maximum difference to be considered equal

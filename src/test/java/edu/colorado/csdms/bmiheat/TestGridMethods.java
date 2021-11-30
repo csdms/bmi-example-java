@@ -4,11 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * JUnit tests for the grid information methods of the {@link BmiHeat} class.
  */
+@Ignore
 public class TestGridMethods {
   
   private String varName;

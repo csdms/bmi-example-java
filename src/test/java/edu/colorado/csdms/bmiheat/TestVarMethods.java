@@ -3,11 +3,13 @@ package edu.colorado.csdms.bmiheat;
 import static org.junit.Assert.assertEquals;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * JUnit tests for the getter and setter methods of the {@link BmiHeat} class.
  */
+@Ignore
 public class TestVarMethods {
 
   private static final int SIZEOF_DOUBLE = 8;
