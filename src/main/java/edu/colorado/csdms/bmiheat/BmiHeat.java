@@ -13,18 +13,12 @@ import edu.colorado.csdms.heat.Heat;
 
 /**
  * BMI methods that wrap the {@link edu.colorado.csdms.heat.Heat} class.
- *
- * @author mpiper
- * @version $Id: $Id
  */
 public class BmiHeat implements BMI {
-  
-  /** Constant <code>MODEL_NAME="The 2D Heat equation"</code> */
+
   public static final String MODEL_NAME = "The 2D Heat equation"; 
-  /** Constant <code>INPUT_VAR_NAMES="{plate_surface__temperature}"</code> */
   public static final String[] INPUT_VAR_NAMES = 
     {"plate_surface__temperature"};
-  /** Constant <code>OUTPUT_VAR_NAMES="{plate_surface__temperature}"</code> */
   public static final String[] OUTPUT_VAR_NAMES = 
     {"plate_surface__temperature"};
   
@@ -42,8 +36,7 @@ public class BmiHeat implements BMI {
     grids = new HashMap<Integer, String>();
     gridType = new HashMap<Integer, String>();
   }
-  
-  /** {@inheritDoc} */
+
   @Override
   public void initialize(String configFile) {
     File theFile = new File(configFile);
@@ -53,7 +46,6 @@ public class BmiHeat implements BMI {
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public void initialize() {
     model = new Heat();
@@ -69,46 +61,12 @@ public class BmiHeat implements BMI {
     grids.put(0, INPUT_VAR_NAMES[0]);
     gridType.put(0, "uniform_rectilinear_grid");
   }
-  
-  /**
-   * A helper that converts a 2D array of doubles into a 1D array.
-   *
-   * @param array2D a 2D array of doubles
-   * @return a 1D array of doubles
-   */
-  protected double[] flattenArray2D(double[][] array2D) {
-	int nRows = array2D.length, nCols = array2D[0].length;
-	double[] array1D = new double[(nRows*nCols)];
-      for ( int i = 0; i < nRows; i++ ) {
-	    System.arraycopy(array2D[i], 0, array1D, (i*nCols), nCols);
-      }
-    return array1D;
-  }
 
-  /**
-   * A helper that converts a 1D array of doubles into a 2D array using the
-   * shape of the model grid.
-   *
-   * @param array1D a 1D array of doubles
-   * @param nRows the desired number of rows of the 2D array
-   * @param nCols the desired number of columns of the 2D array
-   * @return a 2D array of doubles
-   */
-  protected double[][] unflattenArray2D(double[] array1D, int nRows, int nCols) {
-    double[][] array2D = new double[nRows][nCols];
-    for (int i = 0; i < nRows; i++) {
-        System.arraycopy(array1D, (i*nCols), array2D[i], 0, nCols);
-    }
-    return array2D;
-  }
-
-  /** {@inheritDoc} */
   @Override
   public void update() {
     model.advanceInTime();
   }
 
-  /** {@inheritDoc} */
   @Override
   public void updateUntil(double then) {
     Double nSteps = (then - getCurrentTime()) / getTimeStep();
@@ -118,7 +76,6 @@ public class BmiHeat implements BMI {
     updateFrac(nSteps - Math.floor(nSteps));
   }
 
-  /** {@inheritDoc} */
   @Override
   public void updateFrac(double timeFrac) {
     double timeStep = getTimeStep();
@@ -127,73 +84,61 @@ public class BmiHeat implements BMI {
     model.setTimeStep(timeStep);
   }
 
-  /** {@inheritDoc} */
   @Override
   public void finalize() {
     // Nothing to do.
   }
 
-  /** {@inheritDoc} */
   @Override
   public String getComponentName() {
     return MODEL_NAME;
   }
 
-  /** {@inheritDoc} */
   @Override
   public String[] getInputVarNames() {
     return INPUT_VAR_NAMES;
   }
 
-  /** {@inheritDoc} */
   @Override
   public int getInputVarNameCount() {
     return INPUT_VAR_NAMES.length;
   }
 
-  /** {@inheritDoc} */
   @Override
   public String[] getOutputVarNames() {
     return OUTPUT_VAR_NAMES;
   }
 
-  /** {@inheritDoc} */
   @Override
   public int getOutputVarNameCount() {
     return OUTPUT_VAR_NAMES.length;
   }
 
-  /** {@inheritDoc} */
   @Override
   public double getStartTime() {
     return 0;
   }
 
-  /** {@inheritDoc} */
   @Override
   public double getCurrentTime() {
     return model.getTime();
   }
 
-  /** {@inheritDoc} */
   @Override
   public double getEndTime() {
     return Double.MAX_VALUE;
   }
 
-  /** {@inheritDoc} */
   @Override
   public double getTimeStep() {
     return model.getTimeStep();
   }
 
-  /** {@inheritDoc} */
   @Override
   public String getTimeUnits() {
     return null; // Not implemented for Heat
   }
 
-  /** {@inheritDoc} */
   @Override
   public String getVarType(String varName) {
     if (varName == getOutputVarNames()[0]) {
@@ -204,13 +149,11 @@ public class BmiHeat implements BMI {
     return null;
   }
 
-  /** {@inheritDoc} */
   @Override
   public String getVarUnits(String varName) {
     return varUnits.get(varName);
   }
 
-  /** {@inheritDoc} */
   @Override
   public int getVarItemsize(String varName) {
     int itemSize = 0;
@@ -220,7 +163,6 @@ public class BmiHeat implements BMI {
     return itemSize;
   }
 
-  /** {@inheritDoc} */
   @Override
   public int getVarNbytes(String varName) {
     if (varName == getOutputVarNames()[0]) {
@@ -230,7 +172,6 @@ public class BmiHeat implements BMI {
     }
   }
 
-  /** {@inheritDoc} */
   @Override
   public int getVarGrid(String varName) {
     for (Map.Entry<Integer, String> entry : grids.entrySet()) {
@@ -241,26 +182,25 @@ public class BmiHeat implements BMI {
     return -1;
   }
 
-  /** {@inheritDoc} */
-  @SuppressWarnings("unchecked")
   @Override
-  public double[] getValue(String varName) {
-	return flattenArray2D(model.getTemperature());
+  public void getValue(String varName, double[] dest) {
+    int nRows = getGridShape(getVarGrid(varName))[0];
+    int nCols = getGridShape(getVarGrid(varName))[1];
+    for (int i = 0; i < nRows; i++) {
+      System.arraycopy(model.getTemperature()[i], 0, dest, (i*nCols), nCols);
+    }
   }
 
-  /** {@inheritDoc} */
   @Override
   public <T> T getValueRef(String varName) {
     return null; // Not implemented
   }
 
-  /** {@inheritDoc} */
   @Override
   public <T> T getValueAtIndices(String varName, int[] indices) {
     return null; // Not implemented
   }
 
-  /** {@inheritDoc} */
   @Override
   public int[] getGridShape(int gridId) {
     List<Integer> shapeAsList = model.getShape();
@@ -271,32 +211,27 @@ public class BmiHeat implements BMI {
     return shapeAsArray;
   }
 
-  /** {@inheritDoc} */
   @Override
   public double[] getGridX(int gridId) {
     return null; // Not implemented for Heat
   }
 
-  /** {@inheritDoc} */
   @Override
   public double[] getGridY(int gridId) {
     return null; // Not implemented for Heat
   }
 
-  /** {@inheritDoc} */
   @Override
   public double[] getGridZ(int gridId) {
     return null; // Not implemented for Heat
   }
 
-  /** {@inheritDoc} */
   @Override
   public int getGridRank(int gridId) {
     List<Integer> shapeAsList = model.getShape();
     return shapeAsList.size();
   }
 
-  /** {@inheritDoc} */
   @Override
   public int getGridSize(int gridId) {
     List<Integer> shapeAsList = model.getShape();
@@ -307,13 +242,11 @@ public class BmiHeat implements BMI {
     return product;
   }
 
-  /** {@inheritDoc} */
   @Override
   public String getGridType(int gridId) {
     return gridType.get(gridId);
   }
 
-  /** {@inheritDoc} */
   @Override
   public double[] getGridSpacing(int gridId) {
     List<Double> spacingAsList = model.getSpacing();
@@ -324,7 +257,6 @@ public class BmiHeat implements BMI {
     return spacingAsArray;
   }
 
-  /** {@inheritDoc} */
   @Override
   public double[] getGridOrigin(int gridId) {
     List<Double> originAsList = model.getOrigin();
@@ -335,51 +267,46 @@ public class BmiHeat implements BMI {
     return originAsArray;
   }
 
-  /** {@inheritDoc} */
   @Override
   public int[] getGridConnectivity(int gridId) {
     return null; // Not implemented for Heat
   }
 
-  /** {@inheritDoc} */
   @Override
   public int[] getGridOffset(int gridId) {
     return null; // Not implemented for Heat
   }
 
-  /** {@inheritDoc} */
   @Override
   public void setValue(String varName, double[] src) {
     int nRows = getGridShape(getVarGrid(varName))[0];
     int nCols = getGridShape(getVarGrid(varName))[1];
-    model.setTemperature(unflattenArray2D(src, nRows, nCols));
+    double[][] temperature = model.getTemperature();
+    for (int i = 0; i < nRows; i++) {
+      System.arraycopy(src, (i*nCols), temperature[i], 0, nCols);
+    }
   }
 
-  /** {@inheritDoc} */
   @Override
   public void setValue(String varName, int[] src) {
     return; // Not implemented for Heat
   }
 
-  /** {@inheritDoc} */
   @Override
   public void setValue(String varName, String[] src) {
     return; // Not implemented for Heat
   }
 
-  /** {@inheritDoc} */
   @Override
   public void setValueAtIndices(String varName, int[] indices, double[] src) {
     return; // Not implemented for Heat
   }
 
-  /** {@inheritDoc} */
   @Override
   public void setValueAtIndices(String varName, int[] indices, int[] src) {
     return; // Not implemented for Heat
   }
 
-  /** {@inheritDoc} */
   @Override
   public void setValueAtIndices(String varName, int[] indices, String[] src) {
     return; // Not implemented for Heat
@@ -437,16 +364,18 @@ public class BmiHeat implements BMI {
     System.out.println("- var nbytes: " + bmi.getVarNbytes(var_name));
 
     // Add an impulse to the default initial temperature field.
-    double[] temp0 = bmi.getValue(var_name);
+    double[] temp0 = new double[bmi.getGridSize(grid_id)];
+    bmi.getValue(var_name, temp0);
     temp0[3*shape[1] + 2] = 100.0;
     bmi.setValue(var_name, temp0);
 
     // Advance the model over several time steps.
     Double currentTime = bmi.getCurrentTime();
+    double[] temp = new double[bmi.getGridSize(grid_id)];
     while (currentTime < 1.0) {
       System.out.println("time = " + currentTime.toString());
       System.out.println("temperature =");
-      double[] temp = bmi.getValue(var_name);
+      bmi.getValue(var_name, temp);
       for (int j = 0; j < shape[0]; j++) {
         for (int i = 0; i < shape[1]; i++) {
           System.out.format("%7.2f", temp[j*shape[1] + i]);
