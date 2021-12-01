@@ -4,82 +4,34 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * JUnit tests for the grid information methods of the {@link BmiHeat} class.
  */
-@Ignore
 public class TestGridMethods {
   
-  private String varName;
   private int gridId;
   private int[] shape;
-  private double[] spacing;
-  private double[] origin;
   private int size;
   private String type;
-  private Double delta; // maximum difference to be considered equal
+  private double[] spacing;
+  private double[] origin;
+  private double delta;
 
   @Before
   public void setUp() throws Exception {
-    varName = "plate_surface__temperature";
     gridId = 0;
+    size = 48;
+    type = "uniform_rectilinear";
     shape = new int[] {8, 6};
     spacing = new double[] {1.0, 1.0};
     origin = new double[] {0.0, 0.0};
-    size = 48;
-    type = "uniform_rectilinear_grid";
     delta = 0.1;
   }
 
   @After
   public void tearDown() throws Exception {
-  }
-
-  /**
-   * Test method for {@link BmiHeat#getVarGrid(java.lang.String)}.
-   */
-  @Test
-  public final void testGetVarGrid() {
-    BmiHeat component = new BmiHeat();
-    component.initialize();
-    assertEquals(gridId, component.getVarGrid(varName));
-  }
-
-  /**
-   * Test method for {@link BmiHeat#getGridShape(int)}.
-   */
-  @Test
-  public final void testGetGridShape() {
-    BmiHeat component = new BmiHeat();
-    component.initialize();
-    assertArrayEquals(shape, component.getGridShape(gridId));
-  }
-
-  /**
-   * Test method for {@link BmiHeat#getGridX(int)}.
-   */
-  @Test
-  public final void testGetGridX() {
-    return; // Not implemented for Heat
-  }
-
-  /**
-   * Test method for {@link BmiHeat#getGridY(int)}.
-   */
-  @Test
-  public final void testGetGridY() {
-    return; // Not implemented for Heat
-  }
-
-  /**
-   * Test method for {@link BmiHeat#getGridZ(int)}.
-   */
-  @Test
-  public final void testGetGridZ() {
-    return; // Not implemented for Heat
   }
 
   /**
@@ -89,6 +41,7 @@ public class TestGridMethods {
   public final void testGetGridRank() {
     BmiHeat component = new BmiHeat();
     component.initialize();
+
     assertEquals(shape.length, component.getGridRank(gridId));
   }
 
@@ -99,6 +52,7 @@ public class TestGridMethods {
   public final void testGetGridSize() {
     BmiHeat component = new BmiHeat();
     component.initialize();
+
     assertEquals(size, component.getGridSize(gridId));
   }
 
@@ -109,7 +63,22 @@ public class TestGridMethods {
   public final void testGetGridType() {
     BmiHeat component = new BmiHeat();
     component.initialize();
+
     assertEquals(type, component.getGridType(gridId));
+  }
+
+  /**
+   * Test method for {@link BmiHeat#getGridShape(int)}.
+   */
+  @Test
+  public final void testGetGridShape() {
+    BmiHeat component = new BmiHeat();
+    component.initialize();
+
+    int[] gridShape = new int[shape.length];
+    component.getGridShape(gridId, gridShape);
+
+    assertArrayEquals(shape, gridShape);
   }
 
   /**
@@ -119,7 +88,11 @@ public class TestGridMethods {
   public final void testGetGridSpacing() {
     BmiHeat component = new BmiHeat();
     component.initialize();
-    assertArrayEquals(spacing, component.getGridSpacing(gridId), delta);
+
+    double[] gridSpacing = new double[spacing.length];
+    component.getGridSpacing(gridId, gridSpacing);
+    
+    assertArrayEquals(spacing, gridSpacing, delta);
   }
 
   /**
@@ -129,23 +102,11 @@ public class TestGridMethods {
   public final void testGetGridOrigin() {
     BmiHeat component = new BmiHeat();
     component.initialize();
-    assertArrayEquals(origin, component.getGridOrigin(gridId), delta);
-  }
+    
+    double[] gridOrigin = new double[origin.length];
+    component.getGridOrigin(gridId, gridOrigin);
 
-  /**
-   * Test method for {@link BmiHeat#getGridConnectivity(int)}.
-   */
-  @Test
-  public final void testGetGridConnectivity() {
-    return; // Not implemented for Heat
-  }
-
-  /**
-   * Test method for {@link BmiHeat#getGridOffset(int)}.
-   */
-  @Test
-  public final void testGetGridOffset() {
-    return; // Not implemented for Heat
+    assertArrayEquals(origin, gridOrigin, delta);
   }
 
 }
