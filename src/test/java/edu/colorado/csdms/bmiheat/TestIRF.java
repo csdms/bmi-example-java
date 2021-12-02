@@ -20,7 +20,7 @@ public class TestIRF {
 
   @Before
   public void setUp() throws Exception {
-    name = "The 2D Heat equation";
+    name = "Heat";
     delta = 0.1;
     inputVarNames = new String[] {"plate_surface__temperature"};
     outputVarNames = new String[] {"plate_surface__temperature"};
@@ -34,6 +34,7 @@ public class TestIRF {
   public final void testInitializeString() {
     BmiHeat component = new BmiHeat();
     component.initialize("src/test/resources/data/heat.xml");
+
     assertNotNull(component);
     assertEquals(0.0, component.getCurrentTime(), delta);
   }
@@ -42,6 +43,7 @@ public class TestIRF {
   public final void testInitialize() {
     BmiHeat component = new BmiHeat();
     component.initialize();
+
     assertNotNull(component);
     assertEquals(0.0, component.getCurrentTime(), delta);
   }
@@ -56,6 +58,7 @@ public class TestIRF {
     for (int i = 0; i < maxIter; i++) {
       component.update();
     }
+
     assertEquals(finalTime, component.getCurrentTime(), delta);
   }
 
@@ -64,6 +67,7 @@ public class TestIRF {
     BmiHeat component = new BmiHeat();
     component.initialize();
     component.updateUntil(10.1);
+
     assertEquals(10.1, component.getCurrentTime(), delta);
   }
 
@@ -75,37 +79,43 @@ public class TestIRF {
   @Test
   public final void testGetComponentName() {
     BmiHeat component = new BmiHeat();
+
     assertEquals(name, component.getComponentName());
   }
 
   @Test
   public final void testGetInputVarNames() {
     BmiHeat component = new BmiHeat();
+
     assertArrayEquals(inputVarNames, component.getInputVarNames());
   }
 
   @Test
   public final void testGetInputVarNameCount() {
     BmiHeat component = new BmiHeat();
-    assertEquals(inputVarNames.length, component.getInputVarNameCount());
+
+    assertEquals(inputVarNames.length, component.getInputItemCount());
   }
 
   @Test
   public final void testGetOutputVarNames() {
     BmiHeat component = new BmiHeat();
+
     assertArrayEquals(outputVarNames, component.getOutputVarNames());
   }
 
   @Test
   public final void testGetOutputVarNameCount() {
     BmiHeat component = new BmiHeat();
-    assertEquals(outputVarNames.length, component.getOutputVarNameCount());
+
+    assertEquals(outputVarNames.length, component.getOutputItemCount());
   }
 
   @Test
   public final void testGetStartTime() {
     BmiHeat component = new BmiHeat();
     component.initialize();
+
     assertEquals(0.0, component.getStartTime(), delta);
   }
 
@@ -113,6 +123,7 @@ public class TestIRF {
   public final void testGetEndTime() {
     BmiHeat component = new BmiHeat();
     component.initialize();
+
     assertEquals(Double.MAX_VALUE, component.getEndTime(), delta);
   }
 

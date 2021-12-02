@@ -3,8 +3,6 @@ package edu.colorado.csdms.bmiheat;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Arrays;
 
 import org.junit.After;
@@ -16,82 +14,23 @@ import org.junit.Test;
  */
 public class TestGetAndSetValue {
 
-  private static final int SIZEOF_DOUBLE = 8;
-
   private Double delta; // maximum difference to be considered equal
   private String varName;
-  private String varUnits;
-  private String varType;
   private Integer gridSize;
-  private Double initialTempMin;
-  private Double initialTempMax;
+  private Double initialTemp;
 
-  /**
-   * @throws java.lang.Exception
-   */
   @Before
   public void setUp() throws Exception {
     delta = 0.1;
     varName = "plate_surface__temperature";
-    varUnits = "K";
-    varType = "double";
     gridSize = 48;
-    initialTempMin = 0.0;
-    initialTempMax = 20.0;
+    initialTemp = 0.0;
   }
 
-  /**
-   * @throws java.lang.Exception
-   */
   @After
   public void tearDown() throws Exception {
   }
 
-  /**
-   * Test method for {@link BmiHeat#getVarType(java.lang.String)}.
-   */
-  @Test
-  public final void testGetVarType() {
-    BmiHeat component = new BmiHeat();
-    component.initialize();
-    assertEquals(varType, component.getVarType(varName));
-  }
-
-  /**
-   * Test method for {@link BmiHeat#getVarUnits(java.lang.String)}.
-   */
-  @Test
-  public final void testGetVarUnits() {
-    BmiHeat component = new BmiHeat();
-    component.initialize();
-    assertEquals(varUnits, component.getVarUnits(varName));
-  }
-
-  /**
-   * Test method for {@link BmiHeat#getVarItemsize(java.lang.String)}.
-   */
-  @Test
-  public final void testGetVarItemsize() {
-    BmiHeat component = new BmiHeat();
-    component.initialize();
-    assertEquals(SIZEOF_DOUBLE, component.getVarItemsize(varName));
-  }
-
-  /**
-   * Test method for {@link BmiHeat#getVarNbytes(java.lang.String)}.
-   */
-  @Test
-  public final void testGetVarNbytes() {
-    BmiHeat component = new BmiHeat();
-    component.initialize();
-    double[] varCpy = new double[gridSize];
-    component.getValue(varName, varCpy);
-    assertEquals(SIZEOF_DOUBLE * varCpy.length, component.getVarNbytes(varName));
-  }
-
-  /**
-   * Test method for {@link BmiHeat#getValue(java.lang.String)}.
-   */
   @Test
   public final void testGetValue() {
     BmiHeat component = new BmiHeat();
@@ -107,9 +46,11 @@ public class TestGetAndSetValue {
     assertArrayEquals(varCpy1, varCpy2, delta);
   }
 
-  /**
-   * Test method for {@link BmiHeat#getValueAtIndices(java.lang.String, int[])}.
-   */
+  @Test
+  public final void testGetValuePtr() {
+    return; // Not implemented
+  }
+
   @Test
   public final void testGetValueAtIndices() {
     return; // Not implemented
@@ -127,13 +68,10 @@ public class TestGetAndSetValue {
     component.getValue(varName, varCpy);
 
     Arrays.sort(varCpy);
-    assertTrue(varCpy[0] >= initialTempMin);
-    assertTrue(varCpy[varCpy.length - 1] <= initialTempMax);
+    assertEquals(initialTemp, varCpy[0], delta);
+    assertEquals(initialTemp, varCpy[gridSize - 1], delta);
   }
 
-  /**
-   * Test method for {@link BmiHeat#setValue(String, Object)}.
-   */
   @Test
   public final void testSetValue() {
     BmiHeat component = new BmiHeat();
@@ -152,9 +90,6 @@ public class TestGetAndSetValue {
     assertArrayEquals(varNew1, varNew2, delta);
   }
 
-  /**
-   * Test method for {@link BmiHeat#setValueAtIndices(String, int[], Object)}.
-   */
   @Test
   public final void testSetValueAtIndices() {
     return; // Not implemented
