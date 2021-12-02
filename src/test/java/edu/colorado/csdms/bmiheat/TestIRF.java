@@ -20,7 +20,7 @@ public class TestIRF {
 
   @Before
   public void setUp() throws Exception {
-    name = "The 2D Heat equation";
+    name = "Heat";
     delta = 0.1;
     inputVarNames = new String[] {"plate_surface__temperature"};
     outputVarNames = new String[] {"plate_surface__temperature"};
