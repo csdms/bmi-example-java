@@ -1,0 +1,24 @@
+name: Build CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Check source, build jar, run
+    if:
+      github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Check style
+        run: mvn checkstyle:check
+      - name: Build with Maven
+        run: mvn verify
+      - name: Run examples
+        run: mvn exec:java
