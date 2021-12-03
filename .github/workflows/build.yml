@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Check source, build jar, run
+    name: Check source, build project, run
     if:
       github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
