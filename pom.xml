@@ -57,6 +57,16 @@
     </dependency>
   </dependencies>
 
+  <repositories>
+    <repository>
+        <id>csdms</id>
+        <name>CSDMS Apache Maven Packages</name>
+        <url>https://csdms.colorado.edu/repository</url>
+        <releases><enabled>true</enabled></releases>
+        <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+  </repositories>
+
   <build>
     <finalName>bmi-example-java</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
