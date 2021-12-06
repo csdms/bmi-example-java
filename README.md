@@ -263,6 +263,11 @@ temperature =
    0.00   0.00   0.00   0.00   0.00   0.00
 ```
 
+If you'd like to experiment,
+try changing the model parameter values in the file
+`src/test/resources/data/heat.xml`,
+then recompiling and running the examples again.
+Is temperature on the plate conserved?
 
 <!-- Links -->
 [bmi]: https://bmi-spec.readthedocs.io
